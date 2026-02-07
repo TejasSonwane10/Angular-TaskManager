@@ -27,7 +27,7 @@ export class TaskManager {
     title: 'Learn Angular Basics',
     description: 'Understand components, modules and data binding',
     category: 'Learning',
-    priority: 'High',
+    priority: 'high',
     dueDate: new Date('2026-02-15'),
     status: 'pending',
     createdAt: new Date('2026-02-01')
@@ -37,7 +37,7 @@ export class TaskManager {
     title: 'Complete .NET Interview Prep',
     description: 'Revise C#, OOP, SOLID and Web API',
     category: 'Career',
-    priority: 'High',
+    priority: 'high',
     dueDate: new Date('2026-02-20'),
     status: 'pending',
     createdAt: new Date('2026-02-05')
@@ -47,7 +47,7 @@ export class TaskManager {
     title: 'Workout Session',
     description: 'Leg day workout at gym',
     category: 'Health',
-    priority: 'Medium',
+    priority: 'medium',
     dueDate: new Date('2026-02-10'),
     status: 'completed',
     createdAt: new Date('2026-02-08'),
@@ -58,7 +58,7 @@ export class TaskManager {
     title: 'Read Stock Market Basics',
     description: 'Go through Zerodha Varsity module 1',
     category: 'Finance',
-    priority: 'Low',
+    priority: 'low',
     dueDate: new Date('2026-02-25'),
     status: 'pending',
     createdAt: new Date('2026-02-07')
@@ -143,4 +143,77 @@ getProductivityLevel() : string
   if (rate >= 40) return "needs-improvement";
   return "poor"; 
 }
+
+onFieldFocus(field : string) : void 
+{
+
+}
+
+onFieldBlur(field : string) : void
+{
+
+}
+
+addTask() : void
+{
+  if (!this.newTask.title || !this.newTask.category || !this.newTask.dueDate) {
+    return;
+  }
+
+  const task : Task = {
+    id : Date.now(),
+    title : this.newTask.title,
+    description : this.newTask.description,
+    category : this.newTask.category,
+    priority : this.newTask.priority,
+    dueDate : new Date(this.newTask.dueDate),
+    status : this.newTask.status,
+    createdAt : new Date(),    
+  }
+
+  this.tasks.push(task);
+  this.clearForm();
+}
+
+clearForm() : void
+{
+  this.newTask = {
+    title : '',
+    description :'',
+    category : '',
+    priority : 'medium',
+    dueDate : '',
+    status : 'pending'
+  }
+}
+
+getFilteredTasks() : Task[]
+{
+  let filtered = [...this.tasks];
+
+  if(this.filterStatus != 'all')
+  {
+    filtered = filtered.filter(task => task.status === this.filterStatus);
+  }
+
+  if(this.filterCategory != 'all')
+  {
+    filtered = filtered.filter(task => task.category === this.filterCategory);
+  }
+
+  if(this.filterPriority != 'all')
+  {
+    filtered = filtered.filter(task => task.priority === this.filterPriority);
+  }
+
+  if(!this.showCompleted)
+  {
+    filtered = filtered.filter(task => task.status !== 'completed');
+  }
+
+  return filtered;
+}
+
+
+
 }
