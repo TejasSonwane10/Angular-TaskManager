@@ -1,1 +1,101 @@
-<p>task-manager works!</p>
+<div class="task-manager-container">
+<!--header section starts-->
+<div class="header-section">
+    <h1>{{'Task Manager'}}</h1>
+    <p class="header-subtitle">
+        Web by Tejas
+    </p>
+</div>
+
+<!--Statastics Cards Start-->
+<div class="stats-container">
+    <div class="stat-card">
+        <div class="stat-label">Total tasks</div>
+        <div class="stat-value">{{tasks.length}}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Completed</div>
+        <div class="stat-value">{{getCompletedTaskCount()}}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Pending</div>
+        <div class="stat-value">{{getPendingTaskCount()}}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Overdue</div>
+        <div class="stat-value">{{getOverdueTaskCount()}}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Completion RAte</div>
+        <div class="stat-value" [style.color]="getCompletionRate() > 70 ? '#10b981' : getCompletionRate()
+            > 40 ? '#f59e0b' : '#ef4444'">{{getCompletionRate()}}%</div>
+    </div>
+</div>
+<!--Statastics Cards end-->
+
+<!--Quick action bars starts-->
+<div class="quick-actions">
+<select class="filter-dropdown" [(ngModel)]="filterStatus">
+    <option value="all">All Status</option>
+    @for (status of statuses; track status) {
+        <option value="status">{{status}}</option>
+    }
+</select>
+
+<select class="filter-dropdown" [(ngModel)]="filterCategory">
+    <option value="all">All Category</option>
+    @for (category of categories; track category) {
+        <option value="category">{{category}}</option>
+    }
+</select>
+
+<select class="filter-dropdown" [(ngModel)]="filterPriority">
+    <option value="all">All Priority</option>
+    @for (priority of priorities; track priority) {
+        <option value="priority">{{priority}}</option>
+    }
+</select>
+
+<label style="display: flex; align-items: center; gap: 8px" for="showCompletedTasks">
+<input type="checkbox" [(ngModel)] = "showCompleted" id="showCompletedTasks"/>
+Show Completed Tasks
+</label>
+</div>
+<!--Quick action bars ends-->
+
+<!--Producttivity alert starts-->
+@switch (getProductivityLevel()) {
+    @case ('excellent') {
+        <div class="alert alert-success">
+            [SUCCESS] Outstanding productivity!
+            Keep up the great work!
+        </div>
+    }
+    @case ('good') {
+        <div class="alert alert-info">
+            [GOOD] Good job!
+            You're maintaining steady progress!
+        </div>
+    }
+    @case ('needs-improvement') {
+        <div class="alert alert-warning">
+            [WARNING] Your productivity could use a boost!
+            Focus on completing tasks!
+        </div>
+    }
+    @case ('poor') {
+        <div class="alert alert-danger">
+            [ALERT] Time to get back on track!
+            Start with small, easy tasks!
+        </div>
+    }
+    @default {
+        <div class="alert alert-info">
+            Keep tracking your tasks!
+        </div>
+    }
+}
+<!--Producttivity alert ends-->
+
+<!--header section ends-->
+</div>

@@ -29,7 +29,7 @@ export class TaskManager {
     category: 'Learning',
     priority: 'High',
     dueDate: new Date('2026-02-15'),
-    status: 'Pending',
+    status: 'pending',
     createdAt: new Date('2026-02-01')
   },
   {
@@ -39,7 +39,7 @@ export class TaskManager {
     category: 'Career',
     priority: 'High',
     dueDate: new Date('2026-02-20'),
-    status: 'Pending',
+    status: 'pending',
     createdAt: new Date('2026-02-05')
   },
   {
@@ -49,7 +49,7 @@ export class TaskManager {
     category: 'Health',
     priority: 'Medium',
     dueDate: new Date('2026-02-10'),
-    status: 'Completed',
+    status: 'completed',
     createdAt: new Date('2026-02-08'),
     completedAt: new Date('2026-02-09')
   },
@@ -60,7 +60,7 @@ export class TaskManager {
     category: 'Finance',
     priority: 'Low',
     dueDate: new Date('2026-02-25'),
-    status: 'Pending',
+    status: 'pending',
     createdAt: new Date('2026-02-07')
   }
 ];
@@ -113,4 +113,34 @@ filterCategory : string = 'all';
 filterPriority : string = 'all';
 showCompleted : boolean = true;
 
+//method
+getCompletedTaskCount(): number{
+  return this.tasks.filter(task => task.status === 'completed').length;
+}
+
+getPendingTaskCount(): number{
+  return this.tasks.filter(task => task.status === 'pending').length;
+}
+
+getOverdueTaskCount(): number{
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  return this.tasks.filter(task => new Date(task.dueDate) < today && task.status != 'completed').length;
+}
+
+getCompletionRate() : number{
+  if (this.tasks.length == 0) {
+    return 0;
+  }
+  return Math.round((this.getCompletedTaskCount() / this.tasks.length) * 100);
+}
+
+getProductivityLevel() : string
+{
+  const rate = this.getCompletionRate();
+  if (rate >= 80) return "excellent";
+  if (rate >= 60) return "good";
+  if (rate >= 40) return "needs-improvement";
+  return "poor"; 
+}
 }
