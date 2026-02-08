@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { take } from 'rxjs';
 
 interface Task{
   id : number;
@@ -28,7 +29,7 @@ export class TaskManager {
     description: 'Understand components, modules and data binding',
     category: 'Learning',
     priority: 'high',
-    dueDate: new Date('2026-02-15'),
+    dueDate: new Date('2024-12-15'),
     status: 'pending',
     createdAt: new Date('2026-02-01')
   },
@@ -212,6 +213,37 @@ getFilteredTasks() : Task[]
   }
 
   return filtered;
+}
+
+toggelTaskComplete(id : number)
+{
+  const task = this.tasks.find(t => t.id === id);
+  if (task) {
+    if (task.status === 'completed') {
+      task.status = 'pending'; 
+      delete task.completedAt;     
+    }
+    else{
+      task.status = 'completed';
+      task.completedAt = new Date();
+    }
+  }
+}
+
+isOverdue(task : Task) : boolean
+{
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  return new Date(task.dueDate) < today && task.status != "completed";
+}
+
+deleteTask(id : number) : void
+{
+  const index = this.tasks.findIndex(task => task.id === id);
+  if(index != -1)
+  {
+    this.tasks.splice(index,1);
+  }
 }
 
 
